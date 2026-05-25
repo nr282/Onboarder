@@ -18,7 +18,7 @@ The solution will utilize AI and traditional software engineering approach.
 Primarily, there will be integrations for: (1) Artifactory, (2) Github, (3) Dev Containers, (4) Access.
 
 
-## Author: 
+## Author, Spectral Technologies: 
 
 The author of this codebase is Nathaniel Rogalskyj. He received his Computer Science Degree from Cornell. 
 
