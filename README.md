@@ -19,7 +19,7 @@ Primarily, there will be integrations for: (1) Artifactory, (2) Github, (3) Dev 
 
 ### Return On Investment 
 
-In my estimation, the return on investment of automating onboarding especially within larger organizations is around 1-2% of developer time. 
+In my estimation, the return on investment of automating onboarding especially within larger organizations is around 2-4% of developer time. 
 
 
 ## Author, Spectral Technologies: 
