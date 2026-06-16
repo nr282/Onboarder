@@ -104,7 +104,11 @@ def process_automation(command: str,
             else:
                 node = graph.string_to_node[state]
                 if node.type == NodeType.INTERMEDIATE:
-                    pass
+                    path = dfs_pathway(node)
+                    transition = None
+                    if path:
+                        transition = path[0]
+                    child.sendline(transition)
                 elif node.type == NodeType.SUCCESS:
                     successful = True
                     break
