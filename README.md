@@ -6,7 +6,7 @@ As a developer, I found that I spent many hours configuring my local and develop
 At the bank, I demonstrated that this process can be brought down from 2 weeks to 2 minutes, saving current
 team 100k. When scaled, the savings can be 10 million+
 
-Big Technology such as Meta have this process mostly automated. 
+Big Tech Companies such as Meta have this process automated. 
 
 ### Solution: Automation
 
@@ -16,6 +16,10 @@ in open source to gain similar efficiency gains.
 The solution will utilize AI and traditional software engineering approach.
 
 Primarily, there will be integrations for: (1) Artifactory, (2) Github, (3) Dev Containers, (4) Access.
+
+### Return On Investment 
+
+In my estimation, the return on investment of automating onboarding especially within larger organizations is around 2-4% of developer time. 
 
 
 ## Author, Spectral Technologies: 
