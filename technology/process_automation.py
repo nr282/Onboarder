@@ -6,3 +6,151 @@ input commands
 """
 
 import pexpect
+from typing import List
+import sys
+import enum
+
+class NodeType(enum.Enum):
+    INTERMEDIATE = 0
+    SUCCESS = 1
+    FAILURE = 2
+
+class Node:
+
+    def __init__(self,
+                 children: list,
+                 transitions: list,
+                 expected_string: str,
+                 type: NodeType):
+
+        self.children = children
+        self.transitions = transitions
+        assert(len(self.children) == len(self.transitions))
+        self.expected_string = expected_string
+        self.type = type
+
+
+class Graph:
+
+    def __init__(self, node):
+        self.node = node
+        self._dfs(node)
+        self.string_to_node = dict()
+
+    def _dfs(self, node):
+
+        if not (node in self.string_to_node):
+            self.string_to_node[node.expected_string] = node
+            for child in node.children:
+                self._dfs(child)
+
+
+
+def dfs_pathway(node):
+
+    result = []
+
+    def dfs(node, res):
+
+        if node.type == NodeType.SUCCESS:
+            nonlocal result
+            result = res[:]
+            return True
+
+        for i, child in enumerate(node.children):
+            transition = node.transitions[i]
+            res.append(transition)
+            path = dfs(child, res)
+            if not path:
+                res.pop()
+            else:
+                break
+
+        return False
+
+    dfs(node, [])
+
+    return result
+
+def process_automation(command: str,
+                      graph: Graph,
+                      ):
+    """
+    Spawns process provided by command, guides the process via inputs, searches
+    for success strings to verify successful execution.
+
+    """
+
+    with open("logs.txt", "wb") as log_file:
+
+        child = pexpect.spawn(command,
+                              timeout=30,
+                              maxread=2000,
+                              searchwindowsize=None,
+                              logfile=log_file,
+                              cwd=None,
+                              env=None)
+
+
+        states = graph.string_to_node.keys() + [pexpect.TIMEOUT, pexpect.EOF]
+        successful = None
+        while True:
+            index = child.expect(states)
+            state = states[index]
+            if state == pexpect.TIMEOUT:
+                break
+            elif state == pexpect.EOF:
+                break
+            else:
+                node = graph.string_to_node[state]
+                if node.type == NodeType.INTERMEDIATE:
+                    pass
+                elif node.type == NodeType.SUCCESS:
+                    successful = True
+                    break
+                else:
+                    successful = False
+
+
+
+def create_graph():
+
+
+    node_1 = Node([],
+                  [],
+                  "SUCCESS_1",
+                  NodeType.SUCCESS)
+
+    node_2 = Node([],
+                  [],
+                  "FAILURE_2",
+                  NodeType.FAILURE)
+
+    node_3 = Node([node_1, node_2],
+                  ["transition_1", "transition_2"],
+                  "INTERMEDIATE_3",
+                  NodeType.INTERMEDIATE)
+
+    node_4 = Node([node_3],
+                  ["transition_3"],
+                  "INTERMEDIATE_4",
+                  NodeType.INTERMEDIATE)
+
+
+    return node_4
+
+
+
+if __name__ == '__main__':
+
+    head = create_graph()
+    result = dfs_pathway(head)
+    print("result: ")
+    print(result)
+
+
+
+
+
+
+
