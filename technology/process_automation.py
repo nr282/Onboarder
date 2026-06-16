@@ -113,43 +113,6 @@ def process_automation(command: str,
 
 
 
-def create_graph():
-
-
-    node_1 = Node([],
-                  [],
-                  "SUCCESS_1",
-                  NodeType.SUCCESS)
-
-    node_2 = Node([],
-                  [],
-                  "FAILURE_2",
-                  NodeType.FAILURE)
-
-    node_3 = Node([node_1, node_2],
-                  ["transition_1", "transition_2"],
-                  "INTERMEDIATE_3",
-                  NodeType.INTERMEDIATE)
-
-    node_4 = Node([node_3],
-                  ["transition_3"],
-                  "INTERMEDIATE_4",
-                  NodeType.INTERMEDIATE)
-
-
-    return node_4
-
-
-
-if __name__ == '__main__':
-
-    head = create_graph()
-    result = dfs_pathway(head)
-    print("result: ")
-    print(result)
-
-
-
 
 
 
