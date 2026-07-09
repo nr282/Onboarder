@@ -98,6 +98,7 @@ def process_automation(command: str,
             index = child.expect(states)
             state = states[index]
             if state == pexpect.TIMEOUT:
+                successful = False # ADD: If window times out, then we were not successful.
                 break
             elif state == pexpect.EOF:
                 child.close() # FIX: Close file after reaching end.
