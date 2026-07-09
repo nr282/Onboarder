@@ -34,8 +34,8 @@ class Graph:
 
     def __init__(self, node):
         self.node = node
+        self.string_to_node = dict() # FIX: Initialize dict before dfs.
         self._dfs(node)
-        self.string_to_node = dict()
 
     def _dfs(self, node):
 
@@ -92,7 +92,7 @@ def process_automation(command: str,
                               env=None)
 
 
-        states = graph.string_to_node.keys() + [pexpect.TIMEOUT, pexpect.EOF]
+        states = list(graph.string_to_node.keys()) + [pexpect.TIMEOUT, pexpect.EOF] # FIX: Cast keys dict to list.
         successful = None
         while True:
             index = child.expect(states)
@@ -100,6 +100,8 @@ def process_automation(command: str,
             if state == pexpect.TIMEOUT:
                 break
             elif state == pexpect.EOF:
+                child.close() # FIX: Close file after reaching end.
+                successful = (child.exitstatus == 0) # If child process ends with no failures, then we were successful.
                 break
             else:
                 node = graph.string_to_node[state]
@@ -114,10 +116,5 @@ def process_automation(command: str,
                     break
                 else:
                     successful = False
-
-
-
-
-
-
-
+                    
+    return successful # ADD: Let process_automation return if a process was successful or not
