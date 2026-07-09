@@ -84,7 +84,7 @@ def process_automation(command: str,
     with open("logs.txt", "wb") as log_file:
 
         child = pexpect.spawn(command,
-                              timeout=30,
+                              timeout=300, # CHANGE: Increase timeout time since torch takes longer.
                               maxread=2000,
                               searchwindowsize=None,
                               logfile=log_file,
